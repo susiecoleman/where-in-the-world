@@ -11,12 +11,21 @@ const setCurrentCountry = (userData: UserData, country: Country): UserData => {
 };
 
 const isLastTurn = (userData: UserData): boolean => {
-  return userData.turnNumber >= 3;
+  return userData.turnNumber >= 5;
 };
 
 const updateTurnCount = (userData: UserData): UserData => {
   userData.turnNumber = userData.turnNumber += 1;
   return userData;
+};
+
+const updateScore = (userData: UserData): UserData => {
+  userData.score = userData.score += 1;
+  return userData;
+};
+
+const getScore = (userData: UserData) => {
+  return userData.score || 0;
 };
 
 export {
@@ -25,4 +34,6 @@ export {
   setCurrentCountry,
   isLastTurn,
   updateTurnCount,
+  updateScore,
+  getScore,
 };

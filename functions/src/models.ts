@@ -3,6 +3,7 @@ import { Country } from 'country-data';
 interface UserData {
   turnNumber: number;
   currentCountry: Country;
+  score: number;
 }
 
 enum Continent {

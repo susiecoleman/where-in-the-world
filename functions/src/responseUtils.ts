@@ -1,12 +1,19 @@
 import { Continent, UserData } from './models';
-import { setCurrentCountry, updateTurnCount } from './userData';
+import { setCurrentCountry, updateScore, updateTurnCount } from './userData';
 
 import { Country } from 'country-data';
 import { getCountryContinent } from './countries';
 
-const updateUserData = (userData: UserData, country: Country) => {
+const updateUserData = (
+  userData: UserData,
+  country: Country,
+  isCorrectAnswer: boolean
+) => {
   setCurrentCountry(userData, country);
   updateTurnCount(userData);
+  if (isCorrectAnswer) {
+    updateScore(userData);
+  }
 };
 
 const answerResponse = (country: Country, isCorrect: boolean) => {

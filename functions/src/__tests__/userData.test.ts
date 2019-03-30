@@ -7,6 +7,7 @@ describe('updateTurnCount', () => {
     const input: UserData = {
       turnNumber: 1,
       currentCountry: lookup.countries({ name: 'United Kingdom' })[0],
+      score: 0,
     };
     expect(updateTurnCount(input).turnNumber).toEqual(2);
   });

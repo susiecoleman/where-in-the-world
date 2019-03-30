@@ -1,5 +1,5 @@
 import { SimpleResponse, dialogflow } from 'actions-on-google';
-import { UserData, getCurrentCountry, isLastTurn } from './userData';
+import { UserData, getCurrentCountry, getScore, isLastTurn } from './userData';
 import { answerResponse, updateUserData } from './responseUtils';
 import { isCorrectContinent, pickCountry } from './countries';
 
@@ -13,6 +13,7 @@ const app = dialogflow<{}, UserData>({
 app.intent('welcome', conv => {
   const country = pickCountry();
   const userData: UserData = conv.user.storage;
+  updateUserData(userData, country, false);
 
   conv.ask(
     new SimpleResponse({
@@ -22,7 +23,6 @@ app.intent('welcome', conv => {
     })
   );
   conv.ask(`Which continent is ${country.name} part of?`);
-  updateUserData(userData, country);
 });
 
 app.intent<{ continent: Continent }>(
@@ -31,15 +31,16 @@ app.intent<{ continent: Continent }>(
     const userData: UserData = conv.user.storage;
     const country = getCurrentCountry(userData);
     const isCorrectAnswer = isCorrectContinent(country, continent);
+    const nextCountry = pickCountry();
+    updateUserData(userData, nextCountry, isCorrectAnswer);
 
+    conv.ask(answerResponse(country, isCorrectAnswer));
     if (isLastTurn(userData)) {
-      conv.ask(answerResponse(country, isCorrectAnswer));
-      conv.close('Thanks for playing');
+      conv.close(
+        `Thanks for playing. You got ${getScore(userData) + 1} right.`
+      );
     } else {
-      conv.ask(answerResponse(country, isCorrectAnswer));
-      const nextCountry = pickCountry();
       conv.ask(`Which continent is ${nextCountry.name} part of?`);
-      updateUserData(userData, nextCountry);
     }
   }
 );
