@@ -1,3 +1,9 @@
+import {
+  Contexts,
+  DialogflowConversation,
+  SimpleResponse,
+  Suggestions,
+} from 'actions-on-google';
 import { Continent, UserData } from './models';
 import { setCurrentCountry, updateScore, updateTurnCount } from './userData';
 
@@ -45,4 +51,32 @@ const answerResponse = (country: Country, isCorrect: boolean) => {
   }
 };
 
-export { updateUserData, answerResponse };
+const askQuestion = (
+  country: Country,
+  conv: DialogflowConversation<{}, UserData, Contexts>
+) => {
+  const response = `Which continent is ${country.name} part of?`;
+  if (conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT')) {
+    conv.ask(
+      new SimpleResponse({
+        speech: response,
+        text: `${response} ${country.emoji}`,
+      })
+    );
+    conv.ask(
+      new Suggestions([
+        'Africa',
+        'Antarctica',
+        'Asia',
+        'Europe',
+        'North America',
+        'Oceania',
+        'South America',
+      ])
+    );
+  } else {
+    conv.ask(response);
+  }
+};
+
+export { updateUserData, answerResponse, askQuestion };

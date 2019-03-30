@@ -1,6 +1,6 @@
 import { SimpleResponse, dialogflow } from 'actions-on-google';
 import { UserData, getCurrentCountry, getScore, isLastTurn } from './userData';
-import { answerResponse, updateUserData } from './responseUtils';
+import { answerResponse, askQuestion, updateUserData } from './responseUtils';
 import { isCorrectContinent, pickCountry } from './countries';
 
 import { Continent } from './models';
@@ -22,7 +22,7 @@ app.intent('welcome', conv => {
         "Welcome to the where in the world game. I'm going to name a country and all you need to do is tell me which continent it's on.",
     })
   );
-  conv.ask(`Which continent is ${country.name} part of?`);
+  askQuestion(country, conv);
 });
 
 app.intent<{ continent: Continent }>(
@@ -40,7 +40,7 @@ app.intent<{ continent: Continent }>(
         `Thanks for playing. You got ${getScore(userData) + 1} right.`
       );
     } else {
-      conv.ask(`Which continent is ${nextCountry.name} part of?`);
+      askQuestion(nextCountry, conv);
     }
   }
 );
