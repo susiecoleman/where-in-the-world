@@ -1,5 +1,5 @@
 import { Continent, Error, convertStringToContinent } from './models';
-import { Country, countries } from 'country-data';
+import { Country, countries, lookup } from 'country-data';
 import {
   Country as CountryData,
   continents,
@@ -13,8 +13,20 @@ const countriesWithContinentsList: {
 const continentsList: { [K: string]: string } = continents;
 
 const pickCountry = (): Country => {
-  const index = Math.floor(Math.random() * countryList.length);
-  return countryList[index];
+  let validCountryFound = false;
+  // Use France as a place holder
+  let country: Country = lookup.countries({ name: 'France' })[0];
+
+  while (!validCountryFound) {
+    const index = Math.floor(Math.random() * countryList.length);
+    const c = countryList[index];
+    if (!(getCountryContinent(c) instanceof Error)) {
+      country = c;
+      validCountryFound = true;
+    }
+  }
+
+  return country;
 };
 
 const isCorrectContinent = (
