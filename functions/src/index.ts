@@ -1,5 +1,6 @@
 import { SimpleResponse, dialogflow } from 'actions-on-google';
-import { UserData, getCurrentCountry, setCurrentCountry } from './userData';
+import { UserData, getCurrentCountry, isLastTurn } from './userData';
+import { answerResponse, updateUserData } from './responseUtils';
 import { isCorrectContinent, pickCountry } from './countries';
 
 import { Continent } from './models';
@@ -11,6 +12,8 @@ const app = dialogflow<{}, UserData>({
 
 app.intent('welcome', conv => {
   const country = pickCountry();
+  const userData: UserData = conv.user.storage;
+
   conv.ask(
     new SimpleResponse({
       text: 'Welcome to Where in the World!',
@@ -18,9 +21,8 @@ app.intent('welcome', conv => {
         "Welcome to the where in the world game. I'm going to name a country and all you need to do is tell me which continent it's on.",
     })
   );
-  conv.ask(`Which continent is ${country.name} part of? ${country.emoji}`);
-  const userData: UserData = conv.user.storage;
-  setCurrentCountry(userData, country);
+  conv.ask(`Which continent is ${country.name} part of?`);
+  updateUserData(userData, country);
 });
 
 app.intent<{ continent: Continent }>(
@@ -29,14 +31,16 @@ app.intent<{ continent: Continent }>(
     const userData: UserData = conv.user.storage;
     const country = getCurrentCountry(userData);
     const isCorrectAnswer = isCorrectContinent(country, continent);
-    if (isCorrectAnswer) {
-      conv.ask("That's correct!");
+
+    if (isLastTurn(userData)) {
+      conv.ask(answerResponse(country, isCorrectAnswer));
+      conv.close('Thanks for playing');
     } else {
-      conv.ask("That's wrong");
+      conv.ask(answerResponse(country, isCorrectAnswer));
+      const nextCountry = pickCountry();
+      conv.ask(`Which continent is ${nextCountry.name} part of?`);
+      updateUserData(userData, nextCountry);
     }
-    const nextCountry = pickCountry();
-    conv.ask(`Which continent is ${nextCountry.name} part of?`);
-    setCurrentCountry(userData, nextCountry);
   }
 );
 

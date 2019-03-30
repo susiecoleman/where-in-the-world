@@ -10,4 +10,19 @@ const setCurrentCountry = (userData: UserData, country: Country): UserData => {
   return userData;
 };
 
-export { UserData, getCurrentCountry, setCurrentCountry };
+const isLastTurn = (userData: UserData): boolean => {
+  return userData.turnNumber >= 3;
+};
+
+const updateTurnCount = (userData: UserData): UserData => {
+  userData.turnNumber = userData.turnNumber += 1;
+  return userData;
+};
+
+export {
+  UserData,
+  getCurrentCountry,
+  setCurrentCountry,
+  isLastTurn,
+  updateTurnCount,
+};
