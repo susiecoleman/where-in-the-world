@@ -45,4 +45,42 @@ app.intent<{ continent: Continent }>(
   }
 );
 
+app.intent('repeat', conv => {
+  const userData: UserData = conv.user.storage;
+  const country = getCurrentCountry(userData);
+  askQuestion(country, conv);
+});
+
+app.intent('no_input', conv => {
+  const userData: UserData = conv.user.storage;
+  const country = getCurrentCountry(userData);
+  conv.ask("Sorry I didn't catch that.");
+  askQuestion(country, conv);
+});
+
+app.intent('fallback_intent', conv => {
+  const userData: UserData = conv.user.storage;
+  const country = getCurrentCountry(userData);
+  conv.ask("Sorry I didn't catch that.");
+  askQuestion(country, conv);
+});
+
+app.intent('help', conv => {
+  const userData: UserData = conv.user.storage;
+  const country = getCurrentCountry(userData);
+  conv.ask(
+    new SimpleResponse({
+      speech:
+        "Where in the world is a geography guessing game. I'm going to name a country and you have to say which continent it is part of. The possible options are Africa, Antarctica, Asia, Europe, North America, Oceania or South America.",
+      text:
+        "This is a guessing game. I'm going to name a country and you have to say which continent it is part of.",
+    })
+  );
+  askQuestion(country, conv);
+});
+
+app.intent('quit', conv => {
+  conv.close('Thanks for playing Where in the World. Goodbye.');
+});
+
 exports.whereInTheWorld = region('europe-west1').https.onRequest(app);
