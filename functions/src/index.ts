@@ -19,7 +19,7 @@ app.intent('welcome', conv => {
     new SimpleResponse({
       text: 'Welcome to Where in the World!',
       speech:
-        "Welcome to the where in the world game. I'm going to name a country and all you need to do is tell me which continent it's on.",
+        "Welcome to the where in the world game. I'm going to name a country and all you need to do is tell me which continent it's on. There are 5 questions.",
     })
   );
   askQuestion(country, conv);
