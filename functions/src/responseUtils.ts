@@ -60,7 +60,9 @@ const askQuestion = (
     conv.ask(
       new SimpleResponse({
         speech: response,
-        text: `${response} ${country.emoji}`,
+        text: `${response} ${
+          country.emoji === 'undefined' ? '' : country.emoji
+        }`,
       })
     );
     conv.ask(
