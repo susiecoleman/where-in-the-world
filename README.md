@@ -22,6 +22,8 @@ run `yarn valid` from inside the `functions` directory to build, lint and test t
 
 ## Action in the Action Store
 
+[https://assistant.google.com/services/a/uid/000000038277cc47?hl=en_uk](https://assistant.google.com/services/a/uid/000000038277cc47?hl=en_uk)
+
 ### Privacy Policy - Required for release
 
 [https://sites.google.com/view/whereintheworldaction/home](https://sites.google.com/view/whereintheworldaction/home)
