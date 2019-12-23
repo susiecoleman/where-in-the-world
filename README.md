@@ -12,6 +12,8 @@ run `yarn install` from inside the `functions` directory
 
 ## Deploy
 
+Google Account is needed. As part of the deploy step you will be asked to log in.
+
 run `yarn deploy` from inside the `functions` directory
 
 ## Running Locally
