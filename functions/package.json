@@ -1,12 +1,13 @@
 {
-  "name": "WhereInTheWorld",
+  "name": "where-in-the-world",
+  "license": "GNU GPLv3",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "serve": "yarn run build && firebase serve --only functions",
     "shell": "yarn run build && firebase functions:shell",
     "start": "yarn run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase login && firebase deploy --only functions",
     "test": "yarn jest --no-cache",
     "valid": "yarn run lint && yarn run build && yarn run test"
   },
@@ -15,22 +16,24 @@
     "actions-on-google": "^2.6.0",
     "countries-list": "^2.4.2",
     "country-data": "^0.0.31",
-    "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.0.3"
+    "firebase-admin": "^8.0.0",
+    "firebase-functions": "^3.3.0",
+    "firebase-tools": "^7.11.0"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.5.0",
     "@types/country-data": "^0.0.0",
-    "@types/jest": "^23.3.12",
-    "jest": "^23.6.0",
+    "@types/jest": "^24.0.24",
+    "jest": "^24.2.0",
     "prettier": "^1.15.3",
-    "ts-jest": "^23.10.5",
+    "ts-jest": "^24.2.0",
     "tslint": "~5.8.0",
     "tslint-config-prettier": "^1.17.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.7.4"
   },
   "private": true,
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "jest": {
     "moduleFileExtensions": [
